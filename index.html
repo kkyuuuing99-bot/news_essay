@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>나는 뉴스를 보는가, 소비하는가</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@400;500;700&display=swap');
@@ -14,27 +14,26 @@
             --text: #1a1a1a;
             --sub: #6b6560;
             --accent: #c0392b;
-            --accent2: #2c3e50;
             --notification-bg: rgba(255,255,255,0.97);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Noto Sans KR', sans-serif;
             background-color: var(--bg);
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
-            gap: 60px;
-            padding: 40px;
-            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 32px 20px 48px;
+            gap: 32px;
         }
 
-        /* 왼쪽 타이틀 영역 */
         .title-area {
-            max-width: 280px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
         }
         .title-area .eyebrow {
             font-size: 0.72rem;
@@ -42,80 +41,71 @@
             letter-spacing: 0.15em;
             text-transform: uppercase;
             color: var(--accent);
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
         .title-area h1 {
             font-family: 'Noto Serif KR', serif;
-            font-size: 1.9rem;
+            font-size: 1.7rem;
             font-weight: 900;
-            line-height: 1.4;
+            line-height: 1.45;
             color: var(--text);
-            margin-bottom: 20px;
+            margin-bottom: 14px;
         }
         .title-area p {
             color: var(--sub);
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             line-height: 1.8;
-            border-left: 2px solid var(--accent);
-            padding-left: 14px;
         }
 
-        /* 폰 목업 */
         .phone-wrap {
             position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
         }
 
         .phone-mockup {
-            width: 340px;
-            height: 700px;
-            border: 14px solid var(--phone-border);
-            border-radius: 44px;
+            width: 300px;
+            height: 600px;
+            border: 12px solid var(--phone-border);
+            border-radius: 40px;
             background: var(--phone-bg);
-            box-shadow: 
-                0 40px 80px rgba(0,0,0,0.2),
-                inset 0 0 0 1px rgba(255,255,255,0.1);
+            box-shadow: 0 32px 64px rgba(0,0,0,0.22);
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
         }
 
-        /* 노치 */
         .notch {
             position: absolute;
-            top: 0;
-            left: 50%;
+            top: 0; left: 50%;
             transform: translateX(-50%);
-            width: 100px;
-            height: 24px;
+            width: 80px; height: 20px;
             background: var(--phone-border);
-            border-radius: 0 0 16px 16px;
+            border-radius: 0 0 12px 12px;
             z-index: 100;
         }
 
-        /* 상태바 */
         .status-bar {
-            height: 44px;
+            height: 38px;
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            padding: 0 24px 6px;
-            font-size: 0.75rem;
+            padding: 0 20px 6px;
+            font-size: 0.7rem;
             font-weight: 700;
             color: var(--text);
             flex-shrink: 0;
         }
 
-        /* 알림 배너 */
         .notification-banner {
             position: absolute;
-            top: 50px;
-            left: 12px;
-            right: 12px;
+            top: 44px; left: 8px; right: 8px;
             background: var(--notification-bg);
-            border-radius: 16px;
-            padding: 12px 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            border-radius: 14px;
+            padding: 10px 12px;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.18);
             z-index: 200;
             cursor: pointer;
             transform: translateY(-120px);
@@ -123,211 +113,144 @@
             transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
-        .notification-banner.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
+        .notification-banner.show { transform: translateY(0); opacity: 1; }
+
         .notif-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
+            width: 32px; height: 32px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             flex-shrink: 0;
         }
         .notif-icon.kakao { background: #FEE500; }
         .notif-icon.message { background: #34C759; }
-        .notif-content {
-            flex: 1;
-            min-width: 0;
-        }
-        .notif-sender {
-            font-size: 0.72rem;
-            font-weight: 700;
-            color: var(--sub);
-            margin-bottom: 2px;
-        }
-        .notif-text {
-            font-size: 0.82rem;
-            font-weight: 500;
-            color: var(--text);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .notif-time {
-            font-size: 0.68rem;
-            color: var(--sub);
-            flex-shrink: 0;
-        }
 
-        /* 홈 화면 */
+        .notif-content { flex: 1; min-width: 0; }
+        .notif-sender { font-size: 0.65rem; font-weight: 700; color: var(--sub); margin-bottom: 2px; }
+        .notif-text { font-size: 0.75rem; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .notif-time { font-size: 0.62rem; color: var(--sub); flex-shrink: 0; }
+
         .phone-screen {
             flex: 1;
-            padding: 16px 20px 20px;
+            padding: 12px 16px 16px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
             overflow: hidden;
         }
 
         .screen-label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 700;
             letter-spacing: 0.08em;
             color: var(--sub);
             text-transform: uppercase;
-            padding: 4px 0;
+            padding: 2px 0;
         }
 
         .app-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
-            padding: 8px 0;
+            gap: 10px;
+            padding: 4px 0;
         }
 
         .app-icon {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             cursor: pointer;
         }
-        .app-icon:active .icon-box { transform: scale(0.92); }
+        .app-icon:active .icon-box { transform: scale(0.88); }
 
         .icon-box {
-            width: 62px;
-            height: 62px;
-            border-radius: 16px;
+            width: 56px; height: 56px;
+            border-radius: 14px;
             display: flex;
             justify-content: center;
             align-items: center;
             font-weight: 900;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: white;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        .icon-box:hover {
-            transform: scale(1.06);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            transition: transform 0.15s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
 
-        .icon-newneek { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+        .icon-newneek    { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
         .icon-newsletter { background: linear-gradient(135deg, #6c5ce7, #a29bfe); }
-        .icon-youtube { background: linear-gradient(135deg, #ff0000, #c0392b); }
+        .icon-youtube    { background: linear-gradient(135deg, #ff0000, #c0392b); }
         .icon-conclusion { background: linear-gradient(135deg, #2d3436, #636e72); }
-        .icon-ghost { background: #ddd; opacity: 0.3; }
+        .icon-ghost      { background: #ddd; opacity: 0.3; }
 
-        .app-label {
-            font-size: 0.7rem;
-            font-weight: 500;
-            color: var(--text);
-            text-align: center;
-        }
+        .app-label { font-size: 0.65rem; font-weight: 500; color: var(--text); text-align: center; }
 
-        /* 상세 화면 */
-        .app-detail {
+        .hint { font-size: 0.65rem; color: var(--sub); text-align: center; padding: 4px; opacity: 0.8; }
+
+        .app-detail, .notif-detail {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: var(--phone-bg);
             transform: translateY(100%);
-            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition: transform 0.38s cubic-bezier(0.165, 0.84, 0.44, 1);
             z-index: 50;
             display: flex;
             flex-direction: column;
         }
-        .app-detail.active {
-            transform: translateY(0);
-        }
+        .notif-detail { z-index: 150; }
+        .app-detail.active, .notif-detail.active { transform: translateY(0); }
 
         .detail-header {
-            height: 56px;
+            height: 50px;
             display: flex;
             align-items: center;
-            padding: 0 20px;
+            padding: 0 16px;
             border-bottom: 1px solid #e5e0d8;
-            gap: 14px;
+            gap: 10px;
             flex-shrink: 0;
         }
-        .back-btn {
-            font-size: 1.4rem;
-            cursor: pointer;
-            color: var(--accent);
-            line-height: 1;
-            padding: 4px;
-        }
-        .detail-title {
-            font-family: 'Noto Serif KR', serif;
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text);
-        }
-        .detail-tag {
-            margin-left: auto;
-            font-size: 0.65rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            color: var(--accent);
-            text-transform: uppercase;
-        }
+        .back-btn { font-size: 1.2rem; cursor: pointer; color: var(--accent); padding: 4px; }
+        .detail-title { font-family: 'Noto Serif KR', serif; font-size: 0.9rem; font-weight: 700; color: var(--text); }
+        .detail-tag { margin-left: auto; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.06em; color: var(--accent); text-transform: uppercase; white-space: nowrap; }
 
         .detail-body {
             flex: 1;
             overflow-y: auto;
-            padding: 24px 20px;
+            padding: 18px 16px;
             color: #333;
             line-height: 1.9;
-            font-size: 0.88rem;
+            font-size: 0.82rem;
+            -webkit-overflow-scrolling: touch;
         }
-        .detail-body p { margin-bottom: 18px; }
+        .detail-body p { margin-bottom: 14px; }
         .detail-body p:last-child { margin-bottom: 0; }
 
-        mark {
-            background: none;
-            color: var(--accent);
-            font-weight: 700;
-        }
+        mark { background: none; color: var(--accent); font-weight: 700; }
 
-        /* 알림 상세 화면 (notification detail) */
-        .notif-detail {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--phone-bg);
-            transform: translateY(100%);
-            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            z-index: 150;
-            display: flex;
-            flex-direction: column;
-        }
-        .notif-detail.active {
-            transform: translateY(0);
-        }
-
-        /* 독자 힌트 텍스트 */
-        .hint {
-            font-size: 0.72rem;
-            color: var(--sub);
-            text-align: center;
-            padding: 6px;
-            opacity: 0.8;
-        }
-
-        /* 스크롤바 */
-        .detail-body::-webkit-scrollbar { width: 3px; }
-        .detail-body::-webkit-scrollbar-track { background: transparent; }
+        .detail-body::-webkit-scrollbar { width: 2px; }
         .detail-body::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
+
+        @media (min-width: 720px) {
+            body {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                padding: 40px;
+                gap: 60px;
+                height: 100vh;
+                overflow: hidden;
+            }
+            .title-area { text-align: left; max-width: 280px; }
+            .title-area p { border-left: 2px solid var(--accent); padding-left: 14px; }
+            .title-area h1 { font-size: 1.9rem; }
+            .phone-mockup { width: 340px; height: 680px; }
+            .icon-box { width: 62px; height: 62px; }
+        }
     </style>
 </head>
 <body>
@@ -335,14 +258,13 @@
 <div class="title-area">
     <div class="eyebrow">뉴스 이용기 에세이</div>
     <h1>나는 뉴스를<br>보는가,<br>소비하는가</h1>
-    <p>어느 미컴과 학생의 휴대폰 속 뉴스 생태계.<br>앱 아이콘을 클릭하고, 알림이 오면 놓치지 마세요.</p>
+    <p>어느 미컴과 학생의 휴대폰 속 뉴스 생태계.<br>앱 아이콘을 클릭하고,<br>알림이 오면 놓치지 마세요.</p>
 </div>
 
 <div class="phone-wrap">
     <div class="phone-mockup">
         <div class="notch"></div>
 
-        <!-- 알림 배너 1: 조원 (종량제 봉투) -->
         <div class="notification-banner" id="notif1" onclick="openNotifDetail(1)">
             <div class="notif-icon message">💬</div>
             <div class="notif-content">
@@ -352,7 +274,6 @@
             <div class="notif-time">방금</div>
         </div>
 
-        <!-- 알림 배너 2: 언니 (빽다방) -->
         <div class="notification-banner" id="notif2" onclick="openNotifDetail(2)">
             <div class="notif-icon kakao">💛</div>
             <div class="notif-content">
@@ -362,13 +283,11 @@
             <div class="notif-time">방금</div>
         </div>
 
-        <!-- 상태바 -->
         <div class="status-bar">
             <span>11:40</span>
             <span>●●● 🔋</span>
         </div>
 
-        <!-- 홈 화면 -->
         <div class="phone-screen">
             <div class="screen-label">나의 뉴스 생태계</div>
             <div class="app-grid">
@@ -394,7 +313,6 @@
             <div class="hint">앱을 열었다 닫으면 알림이 와요 👀</div>
         </div>
 
-        <!-- 상세: 뉴닉 -->
         <div class="app-detail" id="detail-newneek">
             <div class="detail-header">
                 <span class="back-btn" onclick="closeApp('newneek')">←</span>
@@ -409,7 +327,6 @@
             </div>
         </div>
 
-        <!-- 상세: 뉴스레터 -->
         <div class="app-detail" id="detail-newsletter">
             <div class="detail-header">
                 <span class="back-btn" onclick="closeApp('newsletter')">←</span>
@@ -417,14 +334,13 @@
                 <div class="detail-tag">미디어·경제·사회정치·마케팅</div>
             </div>
             <div class="detail-body">
-                <p>뉴스레터를 구독하게 된 계기는 거창하지 않았다. 2023년 대학교에 입학하고 나름대로 <mark>미디어커뮤니케이션 학과생이라는 뽕이 차있었을 시절</mark>이 있었다. 세상 돌아가는 것에 무지해서는 안 된다는 강박 같은 게 내 안에 있었다.</p>
+                <p>뉴스레터를 구독하게 된 계기는 거창하지 않았다. 2023년 대학교에 입학하고 나름대로 미디어커뮤니케이션 학과생이라는, 소위 말하는 <mark>뽕이 차 있었던 시절</mark>이 있었다. 세상 돌아가는 것에 무지해서는 안 된다는 강박 같은 게 내 안에 있었다.</p>
                 <p>처음 몇 주는 정말 열심히 읽었다. 알람이 뜨자마자 클릭하는 수준을 보이며 큰 관심을 보였는데 시간이 지날수록 흥미가 떨어졌다.</p>
                 <p>지금은 관심 있어서 읽는다기보다는 메일함이 쌓이는 게 보기 싫어서, 혹은 <mark>FOMO</mark>를 얻기 위해 읽는 수준이 됐다. 어디 가서 '뉴스레터 정기 구독해 읽는 사람입니다.' 했을 때 받게 되는 이미지를 위함도 있었다.</p>
                 <p>약간의 지적 허영심이라고 해야 하나, 퍼포먼스라고 해야 하나. 딱 그 수준이 되어 버린 것이다, 겉핥기식으로 세상을 알아가는. 그럼에도 불구하고 나는 나름 성실하게 세상을 따라가고 있다고 믿었다. <mark>겉핥기식이라도 핥기는 하니까!</mark></p>
             </div>
         </div>
 
-        <!-- 상세: 유튜브 -->
         <div class="app-detail" id="detail-youtube">
             <div class="detail-header">
                 <span class="back-btn" onclick="closeApp('youtube')">←</span>
@@ -438,7 +354,6 @@
             </div>
         </div>
 
-        <!-- 상세: 결론 -->
         <div class="app-detail" id="detail-conclusion">
             <div class="detail-header">
                 <span class="back-btn" onclick="closeApp('conclusion')">←</span>
@@ -453,7 +368,6 @@
             </div>
         </div>
 
-        <!-- 알림 상세: 조원 (종량제 봉투) -->
         <div class="notif-detail" id="notif-detail-1">
             <div class="detail-header">
                 <span class="back-btn" onclick="closeNotifDetail(1)">←</span>
@@ -461,15 +375,14 @@
                 <div class="detail-tag">강의실 · 첫 번째</div>
             </div>
             <div class="detail-body">
-                <p>첫 번째 강의 시간이었다. 디지털 저널리즘 강의 시간에 디지털 스토리텔링에 적합한 뉴스 거리에 대해 팀별 활동을 하는 시간. 어쩌다 보니 <mark>'종량제 봉투 대란'</mark>에 대한 이야기가 나왔다.</p>
+                <p>첫 번째 강의 시간이었다. 디지털 저널리즘 강의 시간에 팀별 활동을 하는 시간, 어쩌다 보니 <mark>'종량제 봉투 대란'</mark>에 대한 이야기가 나왔다.</p>
                 <p>조원이 물었다. "그래서 종량제 봉투가 왜 전쟁이랑 관련 있을까요?"</p>
-                <p>며칠 전 뉴스레터에서 읽었던 내용이 머릿속에 떠올랐다. 경제 뉴스레터에서도, 사회정치 뉴스레터에서도 반복해서 다뤘던 이야기였다. 머뭇거리다 나는 읽었던 뉴스레터를 보여주며 조원에게 설명해주었고, 조원들이 "아—" 하고 고개를 끄덕였다.</p>
+                <p>며칠 전 뉴스레터에서 읽었던 내용이 머릿속에 떠올랐다. 경제 뉴스레터에서도, 사회정치 뉴스레터에서도 반복해서 다뤘던 이야기였다. 머뭇거리다 나는 읽었던 뉴스레터를 보여주며 조원에게 설명해 주었고, 조원들이 "아—" 하고 고개를 끄덕였다.</p>
                 <p>조원들이 고개를 끄덕이는 순간, <mark>괜히 어깨가 펴지는 느낌</mark>이 들었다. 동시에 '나도 이런 걸 알고 남들에게 알려줄 수 있는 사람이구나'라는 묘한 더러운 우월감 같은 것도.</p>
-                <p>그런데 그 감정이 올라오는 순간, 동시에 굉장히 찝찝해졌다. '내가 뉴스를 보는 이유가 무엇이지?'라는 근본적인 질문이 떠오른 것이다. 나는 알기 위해 뉴스를 보는 건지, 아니면 아는 척하고 싶어서 뉴스를 보는 것인지.</p>
+                <p>그런데 그 감정이 올라오는 순간, 동시에 굉장히 찝찝해졌다. <mark>'내가 뉴스를 보는 이유가 무엇이지?'</mark> 나는 알기 위해 뉴스를 보는 건지, 아니면 아는 척하고 싶어서 뉴스를 보는 것인지.</p>
             </div>
         </div>
 
-        <!-- 알림 상세: 언니 (빽다방) -->
         <div class="notif-detail" id="notif-detail-2">
             <div class="detail-header">
                 <span class="back-btn" onclick="closeNotifDetail(2)">←</span>
@@ -486,8 +399,8 @@
             </div>
         </div>
 
-    </div><!-- phone-mockup end -->
-</div><!-- phone-wrap end -->
+    </div>
+</div>
 
 <script>
     let closeCount = 0;
@@ -497,11 +410,9 @@
     function openApp(id) {
         document.getElementById('detail-' + id).classList.add('active');
     }
-
     function closeApp(id) {
         document.getElementById('detail-' + id).classList.remove('active');
         closeCount++;
-
         if (closeCount === 1 && !notif1Shown) {
             setTimeout(() => showNotif(1), 600);
             notif1Shown = true;
@@ -510,27 +421,19 @@
             notif2Shown = true;
         }
     }
-
     function showNotif(n) {
         const el = document.getElementById('notif' + n);
         el.classList.add('show');
-        setTimeout(() => {
-            if (!el.classList.contains('clicked')) {
-                el.classList.remove('show');
-            }
-        }, 5000);
+        setTimeout(() => { if (!el.classList.contains('clicked')) el.classList.remove('show'); }, 5000);
     }
-
     function openNotifDetail(n) {
         document.getElementById('notif' + n).classList.remove('show');
         document.getElementById('notif' + n).classList.add('clicked');
         document.getElementById('notif-detail-' + n).classList.add('active');
     }
-
     function closeNotifDetail(n) {
         document.getElementById('notif-detail-' + n).classList.remove('active');
     }
 </script>
-
 </body>
 </html>
